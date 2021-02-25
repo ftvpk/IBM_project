@@ -46,6 +46,8 @@ function loadData(data) {
             console.log(err)
         } 
         console.log("Covid data saved")
+    } else {
+        console.log("Covid data already downloaded")
     }
 }
 
@@ -106,14 +108,7 @@ function getCountryList() {
     let countries = []
 
     for (let i = 0; i < json.length; i++) {
-        country = json[i].country
-
-        // if(country == "Myanmar/Burma"){
-        //     country = "Myanmar or Burma"
-        // }
-        // if(country == "the Holy See/Vatican City State"){
-        //     country = "the Holy See or Vatican City State"
-        // }
+        country = json[i].country      
 
         if (!countries.includes(country) && !country.includes('total')) {  
             countries.push(country)
