@@ -54,7 +54,18 @@ function findCty(country) {
     let found = false
     let rawdata = fs.readFileSync('./data/info.json')
     let json = JSON.parse(rawdata)
-    let data = []    
+    let data = []
+    
+    switch(country){
+        case "Myanmar or Burma":
+              country ="Myanmar/Burma"
+        break
+        case "the Holy See or Vatican City State":
+            country = "the Holy See/ Vatican City State"
+        break
+        default:
+        break
+    }
 
     for (let i = 0; i < json.length; i++) {
         if (json[i].country === country) {
@@ -96,7 +107,15 @@ function getCountryList() {
 
     for (let i = 0; i < json.length; i++) {
         country = json[i].country
-        if (!countries.includes(country) && !country.includes('total')) {
+
+        // if(country == "Myanmar/Burma"){
+        //     country = "Myanmar or Burma"
+        // }
+        // if(country == "the Holy See/Vatican City State"){
+        //     country = "the Holy See or Vatican City State"
+        // }
+
+        if (!countries.includes(country) && !country.includes('total')) {  
             countries.push(country)
         }
     }

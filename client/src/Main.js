@@ -5,11 +5,10 @@ import Chart from './Chart'
 import { useParams } from 'react-router-dom'
 
 const Main = (props) => {
-
-    let countryData = []
+    
     const [countrySeparatedData, setCountrySeparatedData] = useState(null)
     const [countryDoesNotExist, setCountryDoesNotExist] = useState(false)
-    const { country } = useParams()
+    let { country } = useParams()
 
     const setDropDownValues = (countries) => {
         const dropDown = document.getElementById("country")
@@ -23,10 +22,21 @@ const Main = (props) => {
     }
 
     const onChangeHandler = (e) => {
-        const country = e.target.value           
-        window.location.href ='/' + country
+        let countryS = e.target.value  
+        
+        switch(countryS){
+            case "Myanmar/Burma":
+                  countryS ="Myanmar or Burma"
+            break
+            case "the Holy See/ Vatican City State":
+                countryS = "the Holy See or Vatican City State"
+            break
+            default:
+            break
+        }       
+        window.location.href ='/' + countryS
     }
-
+  
     useEffect(() => {
         if(country){
             //Populate dropdown
@@ -38,14 +48,12 @@ const Main = (props) => {
                 return res.json()
             })
             .then(data => {
-                setDropDownValues(data)
-                const dropDown = document.getElementById("country")
-                dropDown.selectedIndex = -1
+                setDropDownValues(data)                                     
             })
             .catch(err => {
                 console.log(err.message)
             })
-
+                     
             //Choose a specific country
             fetch('http://localhost:5000/api/' + country)
             .then(res => {
@@ -55,13 +63,24 @@ const Main = (props) => {
                 return res.json()
             })
             .then(data => {   
-                if(data[0] == "country not found"){
+                if(data[0] === "country not found"){
                     setCountrySeparatedData(null)
                     setCountryDoesNotExist(true)
-                }else {
-                    countryData = data
+                }else {                    
                     setCountrySeparatedData(separate(data))
-                    document.getElementById("country").value = country     
+
+                    switch(country){
+                        case "Myanmar or Burma":
+                              country ="Myanmar/Burma"
+                        break
+                        case "the Holy See or Vatican City State":
+                            country = "the Holy See/ Vatican City State"
+                        break
+                        default:
+                        break
+                    }    
+
+                    setTimeout(function(){ document.getElementById("country").value = country  }, 150);                    
                 }    
             })  
             .catch(err => {
